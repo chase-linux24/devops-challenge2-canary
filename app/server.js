@@ -20,4 +20,4 @@ app.get("/", (req, res) => {
 
 app.get("/healthz", (req, res) => res.status(200).send("OK"));
 
-app.listen(PORT, () => console.log(`v${VERSION} listening on ${PORT}`));
+app.listen(PORT, () => console.log(`v${VERSION} listening on ${PORT}`));// canary demo build
