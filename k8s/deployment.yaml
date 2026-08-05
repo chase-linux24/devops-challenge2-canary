@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: foodtruck
-          image: 381491979307.dkr.ecr.us-east-2.amazonaws.com/tc2-canary-foodtruck:1.0.0
+          image: 381491979307.dkr.ecr.us-east-2.amazonaws.com/tc2-canary-foodtruck:256f47bbc628fec8a200c05cbae0b1d789bad2c6
           ports:
             - containerPort: 3000
           env:
