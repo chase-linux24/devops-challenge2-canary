@@ -15,7 +15,6 @@ permissions:
 env:
   AWS_REGION: us-east-2
   ECR_REPOSITORY: tc2-canary-foodtruck
-  ROLE_ARN: arn:aws:iam::381491979307:role/tc2-canary-github-actions
 
 jobs:
   build:
@@ -23,6 +22,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Debug OIDC claims
+        run: |
+          RESP=$(curl -sH "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
+          TOKEN=$(echo "$RESP" | jq -r '.value')
+          echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq '{sub, aud, repository}'
 
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
@@ -41,7 +46,6 @@ jobs:
         run: |
           docker build -t $REGISTRY/$ECR_REPOSITORY:$TAG ./app
           docker push $REGISTRY/$ECR_REPOSITORY:$TAG
-          echo "Pushed $REGISTRY/$ECR_REPOSITORY:$TAG"
 
       - name: Update deployment manifest (GitOps commit)
         env:
