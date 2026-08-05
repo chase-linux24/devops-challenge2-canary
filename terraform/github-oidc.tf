@@ -21,7 +21,7 @@ resource "aws_iam_role" "github_actions" {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
         }
         StringLike = {
-          "token.actions.githubusercontent.com:sub" = "repo:chase-linux24/devops-challenge2-canary:*"
+          "token.actions.githubusercontent.com:sub" = "repo:chase-linux24@241870743/devops-challenge2-canary@1316664474:*"
         }
       }
     }]
