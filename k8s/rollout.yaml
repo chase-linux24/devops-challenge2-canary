@@ -1,15 +1,27 @@
 
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: foodtruck
-  labels:
-    app: foodtruck
 spec:
-  replicas: 3
+  replicas: 4
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: foodtruck
+
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25
+        - pause: { duration: 60s }
+        - analysis:
+            templates:
+              - templateName: success-rate
+        - setWeight: 50
+        - pause: { duration: 60s }
+        - setWeight: 100
+
   template:
     metadata:
       labels:
@@ -17,24 +29,18 @@ spec:
     spec:
       containers:
         - name: foodtruck
-          image: 381491979307.dkr.ecr.us-east-2.amazonaws.com/tc2-canary-foodtruck:256f47bbc628fec8a200c05cbae0b1d789bad2c6
+          image: 381491979307.dkr.ecr.us-east-2.amazonaws.com/tc2-canary-foodtruck:PLACEHOLDER
           ports:
             - containerPort: 3000
           env:
             - name: APP_VERSION
-              value: "1.0.0"
+              value: "canary"
           readinessProbe:
             httpGet:
               path: /healthz
               port: 3000
             initialDelaySeconds: 3
             periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"
