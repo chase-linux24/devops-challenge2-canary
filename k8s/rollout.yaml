@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: foodtruck
-          image: 381491979307.dkr.ecr.us-east-2.amazonaws.com/tc2-canary-foodtruck:PLACEHOLDER
+          image: 381491979307.dkr.ecr.us-east-2.amazonaws.com/tc2-canary-foodtruck:a0dd5a3cd08cb85bf76ef2e12b9ce02ec04b9258
           ports:
             - containerPort: 3000
           env:
