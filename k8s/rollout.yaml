@@ -34,7 +34,7 @@ spec:
             - containerPort: 3000
           env:
             - name: APP_VERSION
-              value: "v3-broken"
+              value: "v4-broken"
             - name: FAIL_MODE
               value: "true"
           readinessProbe:
