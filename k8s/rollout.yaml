@@ -29,12 +29,14 @@ spec:
     spec:
       containers:
         - name: foodtruck
-          image: 381491979307.dkr.ecr.us-east-2.amazonaws.com/tc2-canary-foodtruck:6a336d99bfa97e1ecabeec1727451fa4f260cc26
+          image: PASTE_YOUR_CURRENT_IMAGE_LINE_VALUE_HERE
           ports:
             - containerPort: 3000
           env:
             - name: APP_VERSION
-              value: "canary"
+              value: "v3-broken"
+            - name: FAIL_MODE
+              value: "true"
           readinessProbe:
             httpGet:
               path: /healthz
